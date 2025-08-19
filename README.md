@@ -6,7 +6,7 @@ create secrets
 /secrets/email_secret  
 /secrets/jwt_secret
 
-cd srcs
+cd app
 
 mkdir db  
 mkdir ssl

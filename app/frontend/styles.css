@@ -786,12 +786,6 @@
   .align-middle {
     vertical-align: middle;
   }
-  .font-\[\'Press_Start_2P\'\,sans-serif\] {
-    font-family: 'Press Start 2P',sans-serif;
-  }
-  .font-\[\'Rubik\'\,sans-serif\] {
-    font-family: 'Rubik',sans-serif;
-  }
   .text-2xl {
     font-size: var(--text-2xl);
     line-height: var(--tw-leading, var(--text-2xl--line-height));
