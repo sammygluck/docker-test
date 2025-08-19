@@ -15,9 +15,9 @@
 <body class="bg-amber-50 text-blue-950">
 
   <!-- Navbar (on top) -->
-  <nav id="navbar" class="bg-blue-950 text-amber-400 px-4 py-3 shadow-md z-50 relative hidden">
+  <nav id="navbar" class="bg-blue-950 text-amber-400 px-4 py-3 shadow-md z-50 relative hidden font-rubik">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
-      <div class="text-xl font-bold">Transcendence</div>
+      <div class="text-xl font-bold font-press">Transcendence</div>
       <div class="hidden md:flex space-x-4">
         <a href="/tournament" data-link class="px-3 py-2 rounded-md hover:bg-gray-700">Tournament</a>
         <a href="/pong" data-link class="px-3 py-2 rounded-md hover:bg-gray-700">Game</a>
@@ -97,8 +97,8 @@
 
   <!-- Tournament Page -->
   <div id="tournamentPage" class="route-view hidden flex flex-col gap-6 justify-center items-center w-full p-4">
-    <div class="w-full sm:w-[90%] p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-['Rubik',sans-serif] grid sm:grid-cols-2 gap-6 mx-auto min-h-[60vh]">
-      <h2 class="text-pink-400 text-2xl font-['Press_Start_2P',sans-serif] mb-4 text-center sm:col-span-2">Tournaments</h2>
+    <div class="w-full sm:w-[90%] p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-rubik grid sm:grid-cols-2 gap-6 mx-auto min-h-[60vh]">
+      <h2 class="text-pink-400 text-2xl font-press mb-4 text-center sm:col-span-2">Tournaments</h2>
       <form id="createTournamentForm" class="mt-6 sm:mt-0 self-start max-w-md w-full mx-auto sm:mr-6 sm:pr-6 sm:border-r sm:border-pink-500">
         <h3 class="text-lg font-semibold mb-2 text-center sm:text-left">Create a New Tournament</h3>
         <input type="text" id="tournamentName" class="w-full max-w-md mx-auto p-2 border border-pink-500 rounded mb-2 bg-[#1e1e3f] text-pink-100 text-center" placeholder="New Tournament" required/>
@@ -113,7 +113,7 @@
 
   <!-- Live / Remote Pong Game -->
   <div id="gamePage" class="route-view hidden  mx-auto flex flex-col items-center">
-    <h1 id="tournament-welcome-message" class="mt-4 text-pink-400 text-2xl font-['Press_Start_2P',sans-serif]">
+    <h1 id="tournament-welcome-message" class="mt-4 text-pink-400 text-2xl font-press">
       PONG&nbsp;TOURNAMENT
     </h1>
     <div id="pongHeader" class="flex items-center justify-between px-6 py-4 w-full">
@@ -121,8 +121,8 @@
         <img id="player1Avatar" src="/default-avatar.svg" alt="Player 1 Avatar" class="w-10 h-10 rounded-full object-cover view-profile cursor-pointer hover:opacity-80"/>
         <span id="player1Name" class="view-profile cursor-pointer hover:underline hover:opacity-80 text-lg font-medium">Player1</span>
       </div>
-      <div id="scoreDisplay" class="text-3xl text-[#00bfff] drop-shadow-[0_0_6px_#00bfff] font-['Press_Start_2P',sans-serif]">0 - 0</div>
-      <div id="countDownDisplay" class="hidden text-3xl text-[#00bfff] drop-shadow-[0_0_6px_#00bfff] font-['Press_Start_2P',sans-serif]">5</div>
+      <div id="scoreDisplay" class="text-3xl text-[#00bfff] drop-shadow-[0_0_6px_#00bfff] font-press">0 - 0</div>
+      <div id="countDownDisplay" class="hidden text-3xl text-[#00bfff] drop-shadow-[0_0_6px_#00bfff] font-press">5</div>
       <div class="flex items-center gap-3">
         <span id="player2Name" class="view-profile cursor-pointer hover:underline hover:opacity-80 text-lg font-medium">Player2</span>
         <img id="player2Avatar" src="/default-avatar.svg" alt="Player 2 Avatar" class="w-10 h-10 rounded-full object-cover view-profile cursor-pointer hover:opacity-80"/>
@@ -133,10 +133,10 @@
 
   <!-- Local 1-vs-1 Pong -->
   <div id="localGamePage" class="route-view hidden h-[50vh] max-w-full aspect-[2/1] mx-auto flex flex-col items-center justify-start">
-    <h1 id="local-welcome-message" class="mt-4 text-pink-400 text-2xl font-['Press_Start_2P',sans-serif]">
+    <h1 id="local-welcome-message" class="mt-4 text-pink-400 text-2xl font-press">
       TRANSCENDENCE&nbsp;PONG
     </h1>
-    <div id="localScoreDisplay" class="mt-4 text-3xl font-['Press_Start_2P',sans-serif]">
+    <div id="localScoreDisplay" class="mt-4 text-3xl font-press">
       0&nbsp;-&nbsp;0
     </div>
     <canvas id="localPongCanvas" class="pong-canvas mt-6 rounded-md shadow-lg ring-2 ring-pink-500 block mx-auto filter drop-shadow-[0_0_6px_#ff2d95]" width="800" height="400"></canvas>
@@ -144,7 +144,7 @@
       <button id="localBtnPlay" class="px-5 py-2 rounded bg-emerald-500 hover:bg-emerald-600 text-white font-semibold disabled:opacity-40">Play</button>
       <button id="localBtnPause" class="px-5 py-2 rounded bg-amber-400 hover:bg-amber-500 text-white font-semibold disabled:opacity-40" disabled>Pause</button>
       <button id="localBtnReset" class="px-5 py-2 rounded bg-rose-500 hover:bg-rose-600 text-white font-semibold disabled:opacity-40" disabled>Reset</button>
-      <div id="localCountdown" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[96px] font-bold text-pink-400 font-['Press_Start_2P',sans-serif] filter drop-shadow-[0_0_6px_#ff2d95]">3</div>
+      <div id="localCountdown" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[96px] font-bold text-pink-400 font-press filter drop-shadow-[0_0_6px_#ff2d95]">3</div>
       </div>
     </div>
 
@@ -216,7 +216,7 @@
   <!-- Profile Modal Template -->
   <template id="profile-tpl">
     <div class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-      <div class="w-auto max-w-[90vw] overflow-x-hidden p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-['Rubik',sans-serif] relative max-h-[90vh] overflow-y-auto">
+      <div class="w-auto max-w-[90vw] overflow-x-hidden p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-rubik relative max-h-[90vh] overflow-y-auto">
         <button class="close-btn absolute top-2 right-4 bg-none border-none text-2xl leading-none">&times;</button>
         <img id="pr-avatar" class="w-20 h-20 rounded-full object-cover mb-4" src="/assets/default-avatar.png" alt="Avatar">
         <h2 id="pr-handle">@user</h2>
@@ -245,7 +245,7 @@
   <!-- Tournament Modal Template -->
   <template id="tournament-tpl">
     <div class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
-      <div class="w-auto max-w-[90vw] overflow-x-hidden p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-['Rubik',sans-serif] flex flex-col relative">
+      <div class="w-auto max-w-[90vw] overflow-x-hidden p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-rubik flex flex-col relative">
         <button class="close-btn absolute top-2 right-4 bg-none border-none text-2xl leading-none">&times;</button>
         <h2 class="text-pink-400 text-xl font-semibold mb-4 text-center" id="selectedTournamentTitle">Select a tournament</h2>
         <p id="statusMessage" class="mb-4 text-sm"></p>
