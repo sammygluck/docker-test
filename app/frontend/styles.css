@@ -1201,6 +1201,14 @@
     }
   }
 }
+@layer utilities {
+  .font-press {
+    font-family: 'Press Start 2P', sans-serif;
+  }
+  .font-rubik {
+    font-family: 'Rubik', sans-serif;
+  }
+}
 @property --tw-translate-x {
   syntax: "*";
   inherits: false;
