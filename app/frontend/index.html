@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transcendence</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"/>
+
+
+
+</head>
+<body class="bg-amber-50 text-blue-950">
+
+  <!-- Navbar (on top) -->
+  <nav id="navbar" class="bg-blue-950 text-amber-400 px-4 py-3 shadow-md z-50 relative hidden">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="text-xl font-bold">Transcendence</div>
+      <div class="hidden md:flex space-x-4">
+        <a href="/tournament" data-link class="px-3 py-2 rounded-md hover:bg-gray-700">Tournament</a>
+        <a href="/pong" data-link class="px-3 py-2 rounded-md hover:bg-gray-700">Game</a>
+        <a href="/local" data-link class="px-3 py-2 rounded-md hover:bg-gray-700">Local 1 vs 1</a>
+      </div>
+      <div class="hidden md:flex items-center space-x-3">
+        <span id="navUsername" class="text-sm text-gray-200">John Doe</span>
+        <img id="navAvatar" src="/default-avatar.svg" alt="Avatar" class="w-8 h-8 rounded-full border border-white cursor-pointer view-profile hover:opacity-80"/>
+        <button id="logoutBtn" class="text-sm text-red-400 hover:text-red-300 ml-2">Logout</button>
+      </div>
+      <div class="md:hidden">
+        <button id="menuToggle" class="focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden px-4 pt-2 pb-4 space-y-2">
+      <a href="/tournament" data-link class="block px-3 py-2 rounded-md hover:bg-gray-700">Tournament</a>
+      <a href="/pong" data-link class="block px-3 py-2 rounded-md hover:bg-gray-700">Game</a>
+      <a href="/local" data-link class="block px-3 py-2 rounded-md hover:bg-gray-700">Local 1 vs 1</a>
+    </div>
+  </nav>
+
+  <!-- Loading Overlay -->
+  <div id="loading" class="fixed inset-0 pt-16 flex items-center justify-center bg-amber-50 z-40 route-view hidden">
+    <div class="flex items-center justify-center space-x-2">
+      <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
+      <span class="text-gray-600">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Login / Signup Page -->
+  <div id="loginPage" class="route-view hidden flex items-center justify-center h-screen bg-amber-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+      <h2 id="auth-form-title" class="text-2xl font-semibold mb-4">Login</h2>
+      <input type="text" id="auth-username" placeholder="Username" required class="w-full p-2.5 mb-4 border border-gray-300 rounded hidden text-blue-950"/>
+      <input type="email" id="auth-email" placeholder="Email" required class="w-full p-2.5 mb-4 border border-gray-300 rounded text-blue-950"/>
+      <input type="password" id="auth-password" placeholder="Password" required class="w-full p-2.5 mb-4 border border-gray-300 rounded text-blue-950"/>
+      <div class="flex items-center mb-4 hidden" id="auth-2fa-checkbox">
+        <input type="checkbox" id="enable-2fa" class="mr-2" />
+        <label for="enable-2fa" class="text-sm text-gray-700">Enable 2-Factor Authentication</label>
+      </div>
+      <button id="auth-button" class="w-full py-2.5 bg-green-500 text-white font-medium rounded hover:bg-green-600 transition-colors">Login</button>
+      <button id="google-login-button" class="w-full mt-4 py-2.5 bg-red-500 text-white font-medium rounded hover:bg-red-600 transition-colors flex items-center justify-center gap-2">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="h-5 w-5 bg-white rounded-full p-0.5"/>
+        Sign in with Google
+      </button>
+      <p id="auth-message" class="text-red-500 mt-2"></p>
+      <p id="auth-toggle" class="toggle mt-4 text-blue-500 hover:text-blue-700 cursor-pointer">Don't have an account? Sign up</p>
+    </div>
+  </div>
+
+  <!-- Two-Factor Auth Page -->
+  <div id="twoFactorPage" class="hidden flex items-center justify-center h-screen bg-amber-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+      <h2 class="text-2xl font-semibold mb-4">Two-Factor Authentication</h2>
+      <p class="mb-4 text-gray-600">Enter the 6-digit code sent to your email.</p>
+      <input type="text" id="auth-2fa-code" placeholder="Enter 2FA code" maxlength="6" pattern="\d{6}" required class="w-full p-2.5 mb-4 border border-gray-300 rounded text-center tracking-widest text-lg text-blue-950"/>
+      <button id="auth-2fa-button" class="w-full py-2.5 bg-green-500 text-white font-medium rounded hover:bg-green-600 transition-colors">Verify Code</button>
+      <p id="auth-2fa-message" class="text-red-500 mt-2"></p>
+      <p id="auth-2fa-back" class="mt-4 text-blue-500 hover:text-blue-700 cursor-pointer">Back to Login</p>
+    </div>
+  </div>
+
+  <!-- Username Selection Page -->
+  <div id="chooseUsernamePage" class="hidden flex items-center justify-center h-screen bg-amber-50">
+    <div class="bg-white p-6 rounded-lg shadow-lg text-center max-w-md w-full">
+      <h2 class="text-2xl font-semibold mb-4">Choose a Username</h2>
+      <p class="mb-4 text-gray-600">Create a unique username for your account.</p>
+      <input type="text" id="username-input" placeholder="Enter your username" maxlength="20" pattern="^[a-zA-Z0-9_]{3,20}$" required class="w-full p-2.5 mb-4 border border-gray-300 rounded text-center text-lg text-blue-950"/>
+      <button id="username-submit-button" class="w-full py-2.5 bg-amber-500 text-white font-medium rounded hover:bg-blue-600 transition-colors">Save Username</button>
+      <p id="username-message" class="text-red-500 mt-2"></p>
+    </div>
+  </div>
+
+  <!-- Tournament Page -->
+  <div id="tournamentPage" class="route-view hidden flex flex-col gap-6 justify-center items-center w-full p-4">
+    <div class="w-full sm:w-[90%] p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-['Rubik',sans-serif] grid sm:grid-cols-2 gap-6 mx-auto min-h-[60vh]">
+      <h2 class="text-pink-400 text-2xl font-['Press_Start_2P',sans-serif] mb-4 text-center sm:col-span-2">Tournaments</h2>
+      <form id="createTournamentForm" class="mt-6 sm:mt-0 self-start max-w-md w-full mx-auto sm:mr-6 sm:pr-6 sm:border-r sm:border-pink-500">
+        <h3 class="text-lg font-semibold mb-2 text-center sm:text-left">Create a New Tournament</h3>
+        <input type="text" id="tournamentName" class="w-full max-w-md mx-auto p-2 border border-pink-500 rounded mb-2 bg-[#1e1e3f] text-pink-100 text-center" placeholder="New Tournament" required/>
+        <button type="submit" class="w-full max-w-md mx-auto bg-emerald-500 text-white font-semibold py-2 rounded hover:bg-emerald-600">Create</button>
+      </form>
+      <div class="max-w-md w-full mx-auto sm:pl-6">
+        <h3 class="text-lg font-semibold mb-2 text-center sm:text-left">Available Tournaments</h3>
+        <ul id="tournamentList" class="space-y-2 overflow-auto max-h-full flex-1"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Live / Remote Pong Game -->
+  <div id="gamePage" class="route-view hidden  mx-auto flex flex-col items-center">
+    <h1 id="tournament-welcome-message" class="mt-4 text-pink-400 text-2xl font-['Press_Start_2P',sans-serif]">
+      PONG&nbsp;TOURNAMENT
+    </h1>
+    <div id="pongHeader" class="flex items-center justify-between px-6 py-4 w-full">
+      <div class="flex items-center gap-3">
+        <img id="player1Avatar" src="/default-avatar.svg" alt="Player 1 Avatar" class="w-10 h-10 rounded-full object-cover view-profile cursor-pointer hover:opacity-80"/>
+        <span id="player1Name" class="view-profile cursor-pointer hover:underline hover:opacity-80 text-lg font-medium">Player1</span>
+      </div>
+      <div id="scoreDisplay" class="text-3xl text-[#00bfff] drop-shadow-[0_0_6px_#00bfff] font-['Press_Start_2P',sans-serif]">0 - 0</div>
+      <div id="countDownDisplay" class="hidden text-3xl text-[#00bfff] drop-shadow-[0_0_6px_#00bfff] font-['Press_Start_2P',sans-serif]">5</div>
+      <div class="flex items-center gap-3">
+        <span id="player2Name" class="view-profile cursor-pointer hover:underline hover:opacity-80 text-lg font-medium">Player2</span>
+        <img id="player2Avatar" src="/default-avatar.svg" alt="Player 2 Avatar" class="w-10 h-10 rounded-full object-cover view-profile cursor-pointer hover:opacity-80"/>
+      </div>
+    </div>
+    <canvas id="pongCanvas" class="block mx-auto rounded-md shadow-lg ring-2 ring-pink-500 filter drop-shadow-[0_0_6px_#ff2d95]" width="800" height="400"></canvas>
+  </div>
+
+  <!-- Local 1-vs-1 Pong -->
+  <div id="localGamePage" class="route-view hidden h-[50vh] max-w-full aspect-[2/1] mx-auto flex flex-col items-center justify-start">
+    <h1 id="local-welcome-message" class="mt-4 text-pink-400 text-2xl font-['Press_Start_2P',sans-serif]">
+      TRANSCENDENCE&nbsp;PONG
+    </h1>
+    <div id="localScoreDisplay" class="mt-4 text-3xl font-['Press_Start_2P',sans-serif]">
+      0&nbsp;-&nbsp;0
+    </div>
+    <canvas id="localPongCanvas" class="pong-canvas mt-6 rounded-md shadow-lg ring-2 ring-pink-500 block mx-auto filter drop-shadow-[0_0_6px_#ff2d95]" width="800" height="400"></canvas>
+      <div id="localControls" class="text-center mt-4 space-x-4">
+      <button id="localBtnPlay" class="px-5 py-2 rounded bg-emerald-500 hover:bg-emerald-600 text-white font-semibold disabled:opacity-40">Play</button>
+      <button id="localBtnPause" class="px-5 py-2 rounded bg-amber-400 hover:bg-amber-500 text-white font-semibold disabled:opacity-40" disabled>Pause</button>
+      <button id="localBtnReset" class="px-5 py-2 rounded bg-rose-500 hover:bg-rose-600 text-white font-semibold disabled:opacity-40" disabled>Reset</button>
+      <div id="localCountdown" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[96px] font-bold text-pink-400 font-['Press_Start_2P',sans-serif] filter drop-shadow-[0_0_6px_#ff2d95]">3</div>
+      </div>
+    </div>
+
+    <!-- Shared Audio Assets -->
+    <audio id="sndWall" src="assets/wall.wav" preload="auto"></audio>
+    <audio id="sndPaddle" src="assets/paddle.wav" preload="auto"></audio>
+    <audio id="sndScore" src="assets/score.wav" preload="auto"></audio>
+    <audio id="sndCountdown" src="assets/countdown.wav" preload="auto"></audio>
+
+    <!-- Chat Panel -->
+  <div id="chat-block"
+       class="fixed bottom-0 left-1/2 -translate-x-1/2
+              w-11/12 sm:w-3/4 lg:w-2/3
+              h-[30vh] max-h-[360px]
+              flex border border-blue-950 bg-amber-50
+             rounded-lg shadow-lg overflow-visible
+              transition-transform duration-200 transform-gpu
+              translate-y-full           <!-- closed by default -->
+              z-40">
+
+    <!-- “–” HIDE BUTTON (always visible while panel is shown) -->
+    <button id="chat-hide"
+            class="absolute -top-3 right-3 w-6 h-6 flex items-center justify-center
+                   rounded-full bg-blue-900 text-amber-400 text-sm font-bold shadow">
+      –
+    </button>
+
+    <div id="live-chat" class="flex flex-col flex-[2] border border-blue-950 p-2 box-border relative rounded-l-lg overflow-hidden">
+      <h2 class="pb-2 font-bold text-blue-950 border-b border-blue-950">Live Chat</h2>
+      <div id="live-chat-content" class="flex-1 flex flex-col-reverse overflow-y-scroll min-h-0 break-all relative"></div>
+      <div class="flex flex-row gap-2 p-2 border-t border-blue-950 box-border">
+        <input id="live-message-in" type="text" placeholder="Type a message..." class="flex-1 p-2 border border-blue-950 rounded bg-amber-50 text-blue-950"/>
+        <button id="live-send-button" class="px-4 py-2 bg-blue-900 text-amber-400 font-bold rounded shrink-0 hover:brightness-90">Send</button>
+      </div>
+    </div>
+    <div id="friends-and-chat" class="flex flex-col flex-[1] border border-blue-950 p-2 box-border relative rounded-r-lg overflow-hidden">
+      <div id="chat-header" class="flex flex-row bg-blue-900 text-amber-400 p-2 items-center font-bold">
+        <button id="back-button" class="left-2 hover:cursor-pointer">&lt;</button>
+        <a id="user-header" class="mx-auto hover:cursor-pointer">Your Username</a>
+      </div>
+      <div id="friends" class="flex flex-col">
+        <input type="search" id="search-bar" placeholder="Search friends..." class="w-full my-2 p-2 border border-blue-950 rounded bg-amber-50 text-blue-950"/>
+        <div id="friend-list"></div>
+      </div>
+      <div id="friend-chat" class="flex flex-col flex-1 overflow-y-auto min-h-0 break-all box-border relative">
+        <div id="chat-content" class="flex flex-col flex-1 overflow-y-auto min-h-0 break-all box-border relative"></div>
+        <div class="flex flex-row gap-2 p-2 border-t border-blue-950 box-border relative">
+          <input id="message-in" type="text" placeholder="Type a message..." class="flex flex-1 border border-blue-950 rounded bg-amber-50 text-blue-950"/>
+          <button id="send-button" class="flex px-4 py-2 bg-blue-900 text-amber-400 font-bold rounded shrink-0 hover:brightness-90">Send</button>
+        </div>
+      </div>
+      <div id="context-menu" class="absolute text-center bg-amber-50 border border-blue-950 rounded-md hidden">
+        <ul class="p-0 m-0 min-w-[150px] list-none">
+          <li id="view-profile" class="py-2 border border-blue-950 rounded-t-md hover:bg-blue-100 hover:text-blue-950">View Profile</li>
+          <li id="invite-user" class="py-2 border border-blue-950 rounded-b-md hover:bg-blue-100 hover:text-blue-950">Invite User</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- “Chat” SHOW BUTTON (only visible when panel is hidden) -->
+  <button id="chat-toggle"
+          class="fixed bottom-4 right-4 z-50
+                 px-3 py-2 rounded-full bg-blue-900 text-amber-400
+                 font-bold shadow-lg hidden">
+    Chat
+  </button>
+
+  <!-- Profile Modal Template -->
+  <template id="profile-tpl">
+    <div class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
+      <div class="w-auto max-w-[90vw] overflow-x-hidden p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-['Rubik',sans-serif] relative max-h-[90vh] overflow-y-auto">
+        <button class="close-btn absolute top-2 right-4 bg-none border-none text-2xl leading-none">&times;</button>
+        <img id="pr-avatar" class="w-20 h-20 rounded-full object-cover mb-4" src="/assets/default-avatar.png" alt="Avatar">
+        <h2 id="pr-handle">@user</h2>
+        <p><strong>Username:</strong> <span id="pr-username"></span></p>
+        <p class="private"><strong>Name:</strong> <span id="pr-full"></span></p>
+        <p class="private"><strong>Email:</strong> <span id="pr-email"></span></p>
+        <p class="private"><strong>Created:</strong> <span id="pr-created"></span></p>
+        <p><strong>Online:</strong> <span id="pr-online" class="inline-block w-3 h-3 rounded-full align-middle"></span></p>
+        <p class="private hidden" id="pr-2fa-row">
+          <label><input type="checkbox" id="pr-2fa"> Two Factor Authentication</label>
+        </p>
+        <footer class="flex flex-wrap gap-2">
+          <button id="pr-edit" class="inline-block px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600 hidden">Edit</button>
+          <button id="pr-save" class="inline-block px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600 hidden">Save</button>
+          <button id="pr-cancel" class="inline-block px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600 hidden">Cancel</button>
+          <button id="pr-friends" class="inline-block px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600">Friends</button>
+          <button id="pr-history" class="inline-block px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600">Match History</button>
+          <button id="pr-friend-action" class="inline-block px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600 hidden"></button>
+          <button id="pr-block-action" class="inline-block px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600 hidden"></button>
+        </footer>
+        <div id="pr-extra" class="mt-4"></div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Tournament Modal Template -->
+  <template id="tournament-tpl">
+    <div class="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50">
+      <div class="w-auto max-w-[90vw] overflow-x-hidden p-6 rounded-lg bg-[#131325] ring-2 ring-pink-500 shadow-xl text-pink-100 font-['Rubik',sans-serif] flex flex-col relative">
+        <button class="close-btn absolute top-2 right-4 bg-none border-none text-2xl leading-none">&times;</button>
+        <h2 class="text-pink-400 text-xl font-semibold mb-4 text-center" id="selectedTournamentTitle">Select a tournament</h2>
+        <p id="statusMessage" class="mb-4 text-sm"></p>
+        <ul id="playerList" class="space-y-2 mb-4 overflow-auto max-h-60 flex-1"></ul>
+        <div class="flex gap-4">
+          <button id="subscribeBtn" class="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 hidden">Subscribe</button>
+          <button id="unsubscribeBtn" class="bg-yellow-500 text-white py-2 px-4 rounded hover:bg-yellow-600 hidden">Unsubscribe</button>
+          <button id="startBtn" class="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 hidden">Start Tournament</button>
+          <button id="deleteBtn" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 hidden">Delete</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- 404 Page -->
+  <div id="notFound" class="route-view hidden flex flex-col items-center justify-center h-screen text-center text-red-500">
+    <h1 class="text-4xl font-bold mb-2">404</h1>
+    <p class="text-lg">Page not found</p>
+    <a href="/" data-link class="mt-4 text-blue-500 hover:underline">Go to Home</a>
+  </div>
+
+  <!-- Application Scripts -->
+  <script type="module" src="router.js"></script>
+  <script type="module" src="/tournament/script.js"></script>
+  <script type="module" src="/login/script.js"></script>
+  <script type="module" src="/chat/chatWSocket.js"></script>
+  <script src="https://accounts.google.com/gsi/client" async></script>
+  <script type="module" src="/login/googleAuth.js"></script>
+  <script type="module" src="/game_websocket/pong_websocket.js"></script>
+  <script type="module" src="pong.js"></script>
+  <script type="module" src="/profile.js"></script>
+
+
+  <!-- chat show / hide -->
+  <script type="module" src="/chat/chatToggle.js"></script>
+</body></html>

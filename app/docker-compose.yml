@@ -1,0 +1,29 @@
+volumes:
+  transcendence:
+
+services:
+  transcendence:
+    container_name: transcendence
+    build:
+      context: ./
+      dockerfile: ./Docker/Dockerfile
+    secrets:
+      - 2fa_secret
+      - email_secret
+      - jwt_secret
+    volumes:
+      - transcendence:/app/db
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
+secrets:
+  2fa_secret:
+    file: ../secrets/2fa_secret
+  email_secret:
+    file: ../secrets/email_secret
+  jwt_secret:
+    file: ../secrets/jwt_secret
+  
