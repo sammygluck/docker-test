@@ -215,8 +215,14 @@ export interface GameHistoryRow {
       });
       ov.querySelector<HTMLElement>("#pr-avatar")?.insertAdjacentHTML(
         "afterend",
-        `<input id="pr-avatar-in" type="file" accept="image/*" class="block my-2 w-full p-1 border border-pink-500 rounded bg-[#1e1e3f] text-pink-100" />`
+        `<label for=\"pr-avatar-in\" class=\"block my-2\">\n          <span class=\"px-3 py-1 rounded-md bg-emerald-500 text-white font-semibold hover:bg-emerald-600 cursor-pointer\">Upload</span>\n          <input id=\"pr-avatar-in\" type=\"file\" accept=\"image/*\" class=\"hidden\" />\n        </label>\n        <span id=\"pr-avatar-name\" class=\"block text-sm text-pink-100\"></span>`
       );
+      const imgIn = ov.querySelector<HTMLInputElement>("#pr-avatar-in");
+      const nameOut = ov.querySelector<HTMLElement>("#pr-avatar-name");
+      imgIn?.addEventListener("change", () => {
+        const file = imgIn.files?.[0];
+        if (nameOut) nameOut.textContent = file ? file.name : "";
+      });
     };
   
     cancel.onclick = () => {
