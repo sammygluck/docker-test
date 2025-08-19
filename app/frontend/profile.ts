@@ -175,18 +175,26 @@ export interface GameHistoryRow {
     const edit   = ov.querySelector<HTMLButtonElement>("#pr-edit")!;
     const save   = ov.querySelector<HTMLButtonElement>("#pr-save")!;
     const cancel = ov.querySelector<HTMLButtonElement>("#pr-cancel")!;
-  
+
+    const show = (btn: HTMLElement) => {
+      btn.classList.remove("hidden");
+      btn.classList.add("inline-block");
+    };
+    const hide = (btn: HTMLElement) => {
+      btn.classList.add("hidden");
+      btn.classList.remove("inline-block");
+    };
+
     // Button visibility defaults
-    edit.classList.remove("hidden");
-    edit.classList.add("inline-block");
-    save.classList.add("hidden");
-    cancel.classList.add("hidden");
-  
+    show(edit);
+    hide(save);
+    hide(cancel);
+
     edit.onclick = () => {
       // Toggle visibility of buttons
-      edit.classList.add("hidden");
-      save.classList.remove("hidden");
-      cancel.classList.remove("hidden");
+      hide(edit);
+      show(save);
+      show(cancel);
 
       tfHooks?.enable();
   
