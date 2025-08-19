@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "build:css": "npx @tailwindcss/cli -c tailwind.config.js -i default.css -o styles.css"
+  },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "typescript": "^5.8.3"
