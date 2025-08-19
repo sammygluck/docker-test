@@ -206,7 +206,7 @@ export interface GameHistoryRow {
 		const input = document.createElement("input");
 		input.id = `pr-${k}-in`;
 		input.value = val;
-		input.className = "w-full text-gray-400";
+                input.className = "w-full p-1 border border-pink-500 rounded bg-[#1e1e3f] text-pink-100";
 		
 		span.replaceChildren(input);
 		});
@@ -215,7 +215,7 @@ export interface GameHistoryRow {
       });
       ov.querySelector<HTMLElement>("#pr-avatar")?.insertAdjacentHTML(
         "afterend",
-        `<input id="pr-avatar-in" type="file" accept="image/*" class="block my-2 text-gray-400" />`
+        `<input id="pr-avatar-in" type="file" accept="image/*" class="block my-2 w-full p-1 border border-pink-500 rounded bg-[#1e1e3f] text-pink-100" />`
       );
     };
   
